@@ -1,46 +1,29 @@
 import {Prisma} from "@prisma/client";
-import prisma from "../database/db";
+import * as userRepository from "../repository/userRepository";
 
 // @ts-ignore
-export async function signup (req, res) {
-    const { name, email, posts } = req.body
+export async function signup(req, res) {
+  const {name, email, posts} = req.body
 
-    const postData = posts?.map((post: Prisma.PostCreateInput) => {
-        return { title: post?.title, content: post?.content }
-    })
+  const postData = posts?.map((post: Prisma.PostCreateInput) => {
+    return {title: post?.title, content: post?.content}
+  })
 
-    const result = await prisma.user.create({
-        data: {
-            name,
-            email,
-            posts: {
-                create: postData,
-            },
-        },
-    })
-    res.json(result)
+  const result = await userRepository.create(postData)
+  res.json(result)
 }
 
 // @ts-ignore
 export async function getUsers(req, res) {
-    const users = await prisma.user.findMany()
-    res.json(users)
+  const users = await userRepository.list()
+  res.json(users)
 }
 
 // @ts-ignore
 export async function getUsersDrafts(req, res) {
-    const { id } = req.params
+  const {id} = req.params
+  const drafts = await userRepository.getUserPosts(id);
 
-    const drafts = await prisma.user
-        .findUnique({
-            where: {
-                id: Number(id),
-            },
-        })
-        .posts({
-            where: { published: false },
-        })
-
-    res.json(drafts)
+  res.json(drafts)
 }
 

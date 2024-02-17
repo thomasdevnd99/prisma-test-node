@@ -1,6 +1,5 @@
 import express from 'express'
 import * as userController from './controllers/userController'
-import prisma from "./database/db";
 import * as postController from "./controllers/postController";
 
 const app = express()
@@ -19,7 +18,7 @@ app.get(`/post/:id`, postController.getOne);
 app.get('/feed', postController.list);
 
 const server = app.listen(3000, () =>
-    console.log(`
+  console.log(`
 🚀 Server ready at: http://localhost:3000
 ⭐️ See sample requests: http://pris.ly/e/ts/rest-express#3-using-the-rest-api`),
 )
