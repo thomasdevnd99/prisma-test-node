@@ -1,6 +1,7 @@
 import {Prisma} from "@prisma/client";
 import prisma from "../database/db";
 
+// @ts-ignore
 export async function signup (req, res) {
     const { name, email, posts } = req.body
 
@@ -20,11 +21,13 @@ export async function signup (req, res) {
     res.json(result)
 }
 
+// @ts-ignore
 export async function getUsers(req, res) {
     const users = await prisma.user.findMany()
     res.json(users)
 }
 
+// @ts-ignore
 export async function getUsersDrafts(req, res) {
     const { id } = req.params
 
